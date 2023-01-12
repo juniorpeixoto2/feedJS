@@ -2,7 +2,12 @@ import { Trash, TrashSimple } from "phosphor-react";
 import { useState } from "react";
 import style from "./Comment.module.css";
 
-export function Comment({ content, deleteComment }) {
+interface CommentsProps {
+  deleteComment: (comment: String) => void;
+  content: String;
+}
+
+export function Comment({ content, deleteComment }: CommentsProps) {
   const [likeCount, setLikeCount] = useState(0);
 
   function handleDeleteComment() {

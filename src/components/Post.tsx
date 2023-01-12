@@ -1,10 +1,25 @@
 import { format, formatDistanceToNow } from "date-fns";
 import ptBR from "date-fns/locale/pt-BR";
-import { useState } from "react";
+import { ChangeEvent, FormEvent, useState } from "react";
 import { Comment } from "./Comment";
 import style from "./Post.module.css";
 
-export default function Post({ post }) {
+interface Post {
+  author: {
+    name: string;
+    role: string;
+  };
+  content: {
+    text: String;
+  };
+  publishedAt: Date;
+}
+
+interface PostProps {
+  post: Post;
+}
+
+export default function Post({ post }: PostProps) {
   // const dateAt = new Intl.DateTimeFormat("pt-BR", {
   //   day: "2-digit",
   //   month: "long",
@@ -22,18 +37,18 @@ export default function Post({ post }) {
   const [comments, setComments] = useState(["muito bom!"]);
   const [newCommentText, setNewCommentText] = useState("");
 
-  function handleNewCommentChange() {
+  function handleNewCommentChange(event: ChangeEvent<HTMLTextAreaElement>) {
     setNewCommentText(event.target.value);
   }
 
-  function handleCreateNewComment() {
+  function handleCreateNewComment(event: FormEvent) {
     event.preventDefault();
 
     setComments([...comments, newCommentText]);
     setNewCommentText("");
   }
 
-  function deleteComment(content) {
+  function deleteComment(content: String) {
     const commentsWithoutDeleted = comments.filter((comment) => {
       return comment !== content;
     });
@@ -41,7 +56,7 @@ export default function Post({ post }) {
     setComments(commentsWithoutDeleted);
   }
 
-  function handleNewCommentInvalid() {
+  function handleNewCommentInvalid(event: ChangeEvent<HTMLTextAreaElement>) {
     event.target.setCustomValidity("Obrigatório");
   }
 
